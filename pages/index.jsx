@@ -12,11 +12,11 @@ const TITLE_LENGTH = 50;
 
 // Player State
 const UNSTARTED = -1;
-const ENDED = 0;
+// const ENDED = 0;
 const PLAYING = 1;
 const PAUSED = 2;
 const BUFFERING = 3;
-const CUED = 5;
+// const CUED = 5;
 
 export default function Home() {
   const [player, setPlayer] = useState(null);
