@@ -1,14 +1,15 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Script from "next/script";
+import Image from "next/image";
 
 const PLAYER_DOM_ID = "youtube-player";
 const PLAYLIST_ID = "PLsa91shghYK8O5Yhqpb0NsPzucOtgQVTu";
 const INITIAL_VOLUME = 20;
-const TITLE_LENGTH = 50;
 
 // Player State
 const UNSTARTED = -1;
@@ -67,13 +68,10 @@ export default function Home() {
 
   const getTitleString = (state) => {
     if (state === PLAYING) {
-      return `${(player?.getVideoData()?.title || "").substring(
-        0,
-        TITLE_LENGTH
-      )}...`;
+      return `${player?.getVideoData()?.title || ""}`;
     }
-    if (state === PAUSED) return `Play to continue...`;
-    if (state === BUFFERING) return `Buffering...`;
+    if (state === PAUSED) return `Play to continue`;
+    if (state === BUFFERING) return `Buffering`;
     return "";
   };
 
@@ -125,11 +123,39 @@ export default function Home() {
     };
   }, []);
 
+  const imgProps = {
+    width: "64px",
+    height: "64px",
+    className: "media-button",
+  };
+  const muteButtonProps = {
+    width: "48px",
+    height: "48px",
+    className: "media-button",
+  };
   return (
     <div className="container">
       <Head>
         <title>Play my thing</title>
-        <link rel="icon" href="/lofi.ico" />
+        <link rel="icon" href="/icon.png" />
+        <meta name="keywords" content="Music, LoFi, NextJS" />
+        <meta
+          name="description"
+          content="Play my playlist from anywhere without having to open youtube app."
+        />
+        <meta name="author" content="Dhruv Saraiya" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        {/* twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@dhruvsaraiya7" />
+        <meta name="twitter:creator" content="@dhruvsaraiya7" />
+        <meta name="twitter:title" content="Play my thing" />
+        <meta
+          name="twitter:description"
+          content="Play my playlist from anywhere without having to open youtube app."
+        />
+        <meta name="twitter:image" content="/lofi.gif" />
       </Head>
       <Script src="load-yt.js" />
       <iframe
@@ -144,91 +170,90 @@ export default function Home() {
       <div className="parent-box">
         <div className="title-box">{title}</div>
         <div className="media-box">
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "nowrap",
-              alignItems: "center",
-            }}
-          >
-            <img
-              src="play-previous.png"
-              alt="Prev"
+          <Image
+            src="/play-previous.png"
+            alt="Prev"
+            role="button"
+            onClick={onPrevious}
+            {...imgProps}
+          />
+          {playerState !== PAUSED && (
+            <Image
+              src="/pause-button.png"
+              alt="Pause"
+              onClick={onPause}
               role="button"
-              onClick={onPrevious}
-              className="media-button hw-128"
+              {...imgProps}
             />
-            {playerState !== PAUSED && (
-              <img
-                src="pause-button.png"
-                alt="Pause"
-                onClick={onPause}
-                role="button"
-                className="media-button hw-128"
-              />
-            )}
-            {playerState === PAUSED && (
-              <img
-                src="play.png"
-                alt="Play"
-                onClick={onPlay}
-                role="button"
-                className="media-button hw-128"
-              />
-            )}
-            <img
-              src="play-next.png"
-              alt="Next"
-              onClick={onNext}
+          )}
+          {playerState === PAUSED && (
+            <Image
+              src="/play.png"
+              alt="Play"
+              onClick={onPlay}
               role="button"
-              className="media-button hw-128"
+              {...imgProps}
             />
-          </div>
+          )}
+          <Image
+            src="/play-next.png"
+            alt="Next"
+            onClick={onNext}
+            role="button"
+            {...imgProps}
+          />
         </div>
-        <div className="sound-box">
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "nowrap",
-              alignItems: "center",
-            }}
-          >
-            <div className="mute-button-parent">
-              {isMuted && (
-                <img
-                  src="no-audio.png"
-                  alt="Muted"
-                  onClick={onUnMute}
-                  role="button"
-                  className="media-button"
-                />
-              )}
-              {!isMuted && (
-                <img
-                  src="high-volume.png"
-                  alt="Sound"
-                  onClick={onMute}
-                  role="button"
-                  className="media-button"
-                />
-              )}
-            </div>
-            <input
-              type="range"
-              min="1"
-              max="100"
-              value={volume}
-              id="volume"
-              onChange={onVolumeChange}
-              className="volume-slider"
-            />
+        <div className="volume-box">
+          <div className="mute-button-parent">
+            {isMuted && (
+              <Image
+                src="/no-audio.png"
+                alt="Muted"
+                onClick={onUnMute}
+                role="button"
+                {...muteButtonProps}
+              />
+            )}
+            {!isMuted && (
+              <Image
+                src="/high-volume.png"
+                alt="Sound"
+                onClick={onMute}
+                role="button"
+                {...muteButtonProps}
+              />
+            )}
           </div>
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value={volume}
+            id="volume"
+            onChange={onVolumeChange}
+            className="volume-slider"
+          />
         </div>
       </div>
       <div className="top-right">
-        <div />
+        <Image
+          src="/github.png"
+          alt="GitHub"
+          role="button"
+          onClick={() => window.open("https://github.com/dhruvsaraiya")}
+          {...imgProps}
+        />
+        <Image
+          src="/twitter.png"
+          alt="Tweet"
+          role="button"
+          onClick={() =>
+            window.open(
+              "https://twitter.com/intent/tweet?text=Check%20play-my-thing.netlify.app%20out"
+            )
+          }
+          {...imgProps}
+        />
       </div>
       <div className="bottom-right">
         Icons by <a href="https://icons8.com/license">Icons8</a>
@@ -239,16 +264,6 @@ export default function Home() {
           min-height: 100vh;
           padding: 0 0.5rem;
         }
-        .media-button {
-          cursor: pointer;
-        }
-        .hw-128 {
-          height: 128px;
-          width: 128px;
-        }
-        .media-box {
-          width: 14%;
-        }
         .parent-box {
           padding-top: 30vh;
           padding-left: 5vh;
@@ -258,17 +273,39 @@ export default function Home() {
           font-family: LoFi;
           font-weight: 500;
           font-size: x-large;
+          max-width: 256px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
-        .sound-box {
-          height: 64px;
+        .media-box {
+          margin-top: 1rem;
+          width: 256px;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .media-button {
+          cursor: pointer;
+        }
+        .volume-box {
+          margin-top: 1rem;
+          width: 256px;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          align-items: center;
+          justify-content: space-around;
         }
         .mute-button-parent {
-          width: 128px;
           display: flex;
           justify-content: center;
+          margin-right: 1em;
         }
         .volume-slider {
-          width: 240px;
+          width: 150px;
           -webkit-appearance: none;
           height: 12px;
           background: #ebd2ac;
@@ -307,9 +344,14 @@ export default function Home() {
           -webkit-appearance: none;
         }
         .top-right {
-          position: absolute;
-          top: 10;
-          right: 15;
+          margin-top: 10px;
+          position: fixed;
+          top: 0;
+          right: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          gap: 4px;
         }
         .bottom-right {
           position: fixed;
@@ -329,7 +371,7 @@ export default function Home() {
           height: 100%;
           width: 100%;
           background-image: url("lofi.gif");
-          background-repeat: no-repeat;
+          background-repeat: round;
           background-attachment: fixed;
           background-size: cover;
         }
