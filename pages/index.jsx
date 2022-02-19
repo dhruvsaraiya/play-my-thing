@@ -137,7 +137,7 @@ export default function Home() {
     <div className="container">
       <Head>
         <title>Play my thing</title>
-        <link rel="icon" href="/icon.png" />
+        <link rel="icon" href="/icon.svg" />
         <meta name="keywords" content="Music, LoFi, NextJS" />
         <meta
           name="description"
@@ -155,7 +155,10 @@ export default function Home() {
           name="twitter:description"
           content="Play my playlist from anywhere without having to open youtube app."
         />
-        <meta name="twitter:image" content="/lofi.gif" />
+        <meta
+          name="twitter:image"
+          content="https://raw.githubusercontent.com/dhruvsaraiya/play-my-thing/master/public/lofi.gif"
+        />
       </Head>
       <Script src="load-yt.js" />
       <iframe
@@ -171,7 +174,7 @@ export default function Home() {
         <div className="title-box">{title}</div>
         <div className="media-box">
           <Image
-            src="/play-previous.png"
+            src="/previous.svg"
             alt="Prev"
             role="button"
             onClick={onPrevious}
@@ -179,7 +182,7 @@ export default function Home() {
           />
           {playerState !== PAUSED && (
             <Image
-              src="/pause-button.png"
+              src="/pause.svg"
               alt="Pause"
               onClick={onPause}
               role="button"
@@ -188,7 +191,7 @@ export default function Home() {
           )}
           {playerState === PAUSED && (
             <Image
-              src="/play.png"
+              src="/play.svg"
               alt="Play"
               onClick={onPlay}
               role="button"
@@ -196,7 +199,7 @@ export default function Home() {
             />
           )}
           <Image
-            src="/play-next.png"
+            src="/next.svg"
             alt="Next"
             onClick={onNext}
             role="button"
@@ -207,7 +210,7 @@ export default function Home() {
           <div className="mute-button-parent">
             {isMuted && (
               <Image
-                src="/no-audio.png"
+                src="/mute.svg"
                 alt="Muted"
                 onClick={onUnMute}
                 role="button"
@@ -216,7 +219,7 @@ export default function Home() {
             )}
             {!isMuted && (
               <Image
-                src="/high-volume.png"
+                src="/unmute.svg"
                 alt="Sound"
                 onClick={onMute}
                 role="button"
@@ -237,14 +240,14 @@ export default function Home() {
       </div>
       <div className="top-right">
         <Image
-          src="/github.png"
+          src="/github.svg"
           alt="GitHub"
           role="button"
           onClick={() => window.open("https://github.com/dhruvsaraiya")}
           {...imgProps}
         />
         <Image
-          src="/twitter.png"
+          src="/twitter.svg"
           alt="Tweet"
           role="button"
           onClick={() =>
@@ -254,9 +257,6 @@ export default function Home() {
           }
           {...imgProps}
         />
-      </div>
-      <div className="bottom-right">
-        Icons by <a href="https://icons8.com/license">Icons8</a>
       </div>
 
       <style jsx>{`
