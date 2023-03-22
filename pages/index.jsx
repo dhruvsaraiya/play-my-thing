@@ -8,7 +8,8 @@ import Script from "next/script";
 import Image from "next/image";
 
 const PLAYER_DOM_ID = "youtube-player";
-const PLAYLIST_ID = "PLsa91shghYK8O5Yhqpb0NsPzucOtgQVTu";
+// const PLAYLIST_ID = "PLsa91shghYK8O5Yhqpb0NsPzucOtgQVTu";
+const PLAYLIST_ID = process.env.NEXT_PUBLIC_PLAYLIST_ID;
 const INITIAL_VOLUME = 20;
 
 // Player State
